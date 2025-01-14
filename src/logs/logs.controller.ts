@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ChannelResponse } from './dto/channel-response.dto';
 import { LogsService } from './logs.service';
 
@@ -8,7 +8,11 @@ export class LogsController {
 
   @Get()
   async getChannels(): Promise<ChannelResponse> {
-    const channelList = await this.logsService.listChannels();
-    return channelList
+    return await this.logsService.listChannels();
+  }
+
+  @Get(':channel')
+  async getChannelLogs(@Param('channel') channel: string): Promise<string[]> {
+    return await this.logsService.listChannelLogs(channel);
   }
 }
