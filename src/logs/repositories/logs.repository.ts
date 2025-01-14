@@ -9,7 +9,7 @@ export class LogsRepository {
     try {
       return await fs.readdir(this.log_directory);
     } catch (error) {
-      console.error('Error reading directory:', error);
+      console.error('Error reading log directory:', error);
       return [];
     }
   }
@@ -18,7 +18,17 @@ export class LogsRepository {
     try {
       return await fs.readdir(`${this.log_directory}${channel}`);
     } catch (error) {
-      console.error('Error reading directory:', error);
+      console.error('Error reading channel directory:', error);
+      return [];
+    }
+  }
+
+  async getLogFile(channel: string, date: string): Promise<string[]> {
+    try {
+      const messages = await fs.readFile(`${this.log_directory}${channel}/${date}.log`, 'utf-8');
+      return messages.split('\n')
+    } catch (error) {
+      console.error('Error reading log file:', error);
       return [];
     }
   }
