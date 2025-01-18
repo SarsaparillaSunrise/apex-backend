@@ -26,4 +26,11 @@ type NickMessage = {
   type: 'nick';
 };
 
-export type Message = MessageMessage | JoinMessage | QuitMessage | NickMessage | null;
+type ActionMessage = {
+  time: string;
+  user: string;
+  action: string;
+  type: 'action';
+}
+
+export type Message = MessageMessage | JoinMessage | QuitMessage | NickMessage | ActionMessage | null;

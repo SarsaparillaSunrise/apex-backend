@@ -67,6 +67,15 @@ export class LogsService {
       return { time, oldNick, newNick, type: 'nick' as const };
     }
 
+    // Actions
+    const actionMatch = message.match(
+      /^\[(?<time>\d\d:\d\d:\d\d)\] \* (?<user>\S+) (?<action>.+)$/
+    );
+    if (actionMatch?.groups) {
+      const { time, user, action } = actionMatch.groups;
+      return { time, user, action, type: 'action' as const };
+    }
+
     // Unmatched messages
     return null;
   }
