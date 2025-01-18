@@ -12,7 +12,7 @@ export class LogsService {
     const encodedChannelList = channelList.map((c) => c.replace(/##/g, '++'));
     return {
       channelList: encodedChannelList,
-      favourites: ['++aussies'],
+      favouriteList: ['++aussies'],
     };
   }
 
