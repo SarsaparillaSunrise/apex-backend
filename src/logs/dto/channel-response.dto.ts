@@ -1,4 +1,4 @@
 export type ChannelResponse = {
-  channelList: string[];
-  favouriteList: string[];
+  name: string;
+  logs: string[];
 }

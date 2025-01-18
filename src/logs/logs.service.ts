@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { LogsRepository } from './repositories/logs.repository';
-import { ChannelResponse } from './dto/channel-response.dto';
+import { ChannelListResponse } from './dto/channel-list-response.dto';
 import { Message } from './dto/messages.dto';
 
 @Injectable()
 export class LogsService {
   constructor(private logsRepository: LogsRepository) {}
 
-  public async listChannels(): Promise<ChannelResponse> {
+  public async listChannels(): Promise<ChannelListResponse> {
     const channelList = await this.logsRepository.listLogsDirectory();
     const encodedChannelList = channelList.map((c) => c.replace(/##/g, '++'));
     return {
-      channelList: encodedChannelList,
-      favouriteList: ['++aussies'],
+      channels: encodedChannelList,
+      favourites: ['++aussies'],
     };
   }
 

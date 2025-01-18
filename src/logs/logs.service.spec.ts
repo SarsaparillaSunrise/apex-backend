@@ -32,23 +32,23 @@ describe('LogsService', () => {
       repository.listLogsDirectory.mockResolvedValue(['##channel1', '##test']);
       const result = await service.listChannels();
 
-      expect(result.channelList).toHaveLength(2);
-      expect(result.channelList).toEqual(['++channel1', '++test']);
+      expect(result.channels).toHaveLength(2);
+      expect(result.channels).toEqual(['++channel1', '++test']);
     });
 
     test('includes default favorites in channel listing', async () => {
       repository.listLogsDirectory.mockResolvedValue(['##channel1']);
       const result = await service.listChannels();
 
-      expect(result.favouriteList).toEqual(['++aussies']);
+      expect(result.favourites).toEqual(['++aussies']);
     });
 
     test('returns empty list with defaults when no channels exist', async () => {
       repository.listLogsDirectory.mockResolvedValue([]);
       const result = await service.listChannels();
 
-      expect(result.channelList).toEqual([]);
-      expect(result.favouriteList).toEqual(['++aussies']);
+      expect(result.channels).toEqual([]);
+      expect(result.favourites).toEqual(['++aussies']);
     });
   });
 
