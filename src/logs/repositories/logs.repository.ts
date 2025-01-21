@@ -1,13 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs/promises';
 
 @Injectable()
 export class LogsRepository {
-  private readonly log_directory = './logs/';
+  private readonly logDirectory: string;
+
+  constructor(private configService: ConfigService) {
+    this.logDirectory = this.getLogDirectory();
+  }
+
+  private getLogDirectory(): string {
+    return (
+      this.configService.get<string>('app.logDirectory') ||
+      '/default/log/directory'
+    );
+  }
 
   async listLogsDirectory(): Promise<string[]> {
     try {
-      return await fs.readdir(this.log_directory);
+      return await fs.readdir(this.logDirectory);
     } catch (error) {
       console.error('Error reading log directory:', error);
       return [];
@@ -16,7 +28,7 @@ export class LogsRepository {
 
   async listChannelLogs(channel: string): Promise<string[]> {
     try {
-      return await fs.readdir(`${this.log_directory}${channel}`);
+      return await fs.readdir(`${this.logDirectory}${channel}`);
     } catch (error) {
       console.error('Error reading channel directory:', error);
       return [];
@@ -25,8 +37,11 @@ export class LogsRepository {
 
   async getLogFile(channel: string, date: string): Promise<string[]> {
     try {
-      const messages = await fs.readFile(`${this.log_directory}${channel}/${date}.log`, 'utf-8');
-      return messages.split('\n')
+      const messages = await fs.readFile(
+        `${this.logDirectory}${channel}/${date}.log`,
+        'utf-8',
+      );
+      return messages.split('\n');
     } catch (error) {
       console.error('Error reading log file:', error);
       return [];
