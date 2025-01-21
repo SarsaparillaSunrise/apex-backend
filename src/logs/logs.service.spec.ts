@@ -205,7 +205,7 @@ describe('LogsService', () => {
 
         const result = await service.getLog('++channel', '2023-01-01');
 
-        expect(result).toEqual([null]);
+        expect(result).toEqual([]);
       });
     });
   });

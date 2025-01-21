@@ -22,13 +22,13 @@ export class LogsService {
     );
   }
 
-  public async getLog(channel: string, date: string): Promise<Message[]> {
-    const messages = await this.logsRepository.getLogFile(
-      channel.replace(/\+\+/g, '##'),
-      date,
-    );
-    return Promise.all(messages.map((message) => this.parseMessage(message)));
-  }
+public async getLog(channel: string, date: string): Promise<Message[]> {
+  const messages = await this.logsRepository.getLogFile(
+    channel.replace(/\+\+/g, '##'),
+    date,
+  );
+  return (await Promise.all(messages.map((message) => this.parseMessage(message)))).filter(Boolean); // filter nulls
+}
 
   private async parseMessage(message: string): Promise<Message> {
     // Messages
