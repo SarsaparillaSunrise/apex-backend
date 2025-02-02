@@ -25,7 +25,7 @@ export class LogsService {
   public async getLog(channel: string, date: string): Promise<Message[]> {
     const messages = await this.logsRepository.getLogFile(
       channel.replace(/\+\+/g, '##'),
-      date,
+      `${date}.log`,
     );
     return (
       await Promise.all(messages.map((message) => this.parseMessage(message)))

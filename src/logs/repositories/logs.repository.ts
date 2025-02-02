@@ -28,7 +28,8 @@ export class LogsRepository {
 
   async listChannelLogs(channel: string): Promise<string[]> {
     try {
-      return await fs.readdir(`${this.logDirectory}${channel}`);
+      const files = await fs.readdir(`${this.logDirectory}${channel}`);
+      return files.map((file) => file.replace(/\.log$/, ''));
     } catch (error) {
       console.error('Error reading channel directory:', error);
       return [];
@@ -38,7 +39,7 @@ export class LogsRepository {
   async getLogFile(channel: string, date: string): Promise<string[]> {
     try {
       const messages = await fs.readFile(
-        `${this.logDirectory}${channel}/${date}.log`,
+        `${this.logDirectory}${channel}/${date}`,
         'utf-8',
       );
       return messages.split('\n');
