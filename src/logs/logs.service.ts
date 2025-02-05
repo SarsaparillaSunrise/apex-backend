@@ -9,7 +9,7 @@ export class LogsService {
 
   public async listChannels(): Promise<ChannelListResponse> {
     const channelList = await this.logsRepository.listLogsDirectory();
-    const encodedChannelList = channelList.map((c) => c.replace(/##/g, '++'));
+    const encodedChannelList = channelList.map((c) => this.encodeChannelName(c));
     return {
       channels: encodedChannelList,
       favourites: ['++aussies'],
@@ -18,13 +18,13 @@ export class LogsService {
 
   public async listChannelLogs(channel: string): Promise<string[]> {
     return await this.logsRepository.listChannelLogs(
-      channel.replace(/\+\+/g, '##'),
+      this.decodeChannelName(channel)
     );
   }
 
   public async getLog(channel: string, date: string): Promise<Message[]> {
     const messages = await this.logsRepository.getLogFile(
-      channel.replace(/\+\+/g, '##'),
+      this.decodeChannelName(channel),
       `${date}.log`,
     );
     return (
@@ -80,5 +80,15 @@ export class LogsService {
 
     // Unmatched messages
     return null;
+  }
+
+  private encodeChannelName = (channel: string): string => {
+    const hashCount = (channel.match(/^#+/) || [''])[0].length
+    return '+'.repeat(hashCount) + channel.slice(hashCount)
+  }
+
+  private decodeChannelName = (channel: string): string => {
+    const hashCount = (channel.match(/^\++/) || [''])[0].length
+    return '#'.repeat(hashCount) + channel.slice(hashCount)
   }
 }
