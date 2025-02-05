@@ -29,7 +29,7 @@ export class LogsRepository {
   async listChannelLogs(channel: string): Promise<string[]> {
     try {
       const files = await fs.readdir(`${this.logDirectory}${channel}`);
-      return files.map((file) => file.replace(/\.log$/, ''));
+      return files.map((file) => file.replace(/\.log$/, '')).reverse();
     } catch (error) {
       console.error('Error reading channel directory:', error);
       return [];
